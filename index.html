@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a1a1a" />
+  <meta name="description" content="Utakula? — Kenyan campus meal randomizer for comrades" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Utakula?" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <title>Utakula?</title>
+</head>
+<body>
+
+  <!-- Install Banner -->
+  <div class="install-banner" id="installBanner">
+    <span class="banner-icon">📲</span>
+    <p><strong>Install app:</strong> Add to Home Screen for offline use</p>
+    <button id="installBtn" class="banner-btn">Install</button>
+    <button id="dismissBanner" class="banner-close">✕</button>
+  </div>
+
+  <!-- Header -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="tag">Comrade Edition 🇰🇪</div>
+      <h1>Utakula?</h1>
+      <p>Your Kenyan campus meal randomizer</p>
+    </div>
+    <div class="header-tabs">
+      <button class="tab active" data-tab="spin">Spinner</button>
+      <button class="tab" data-tab="saved">My Picks</button>
+      <button class="tab" data-tab="menu">Full Menu</button>
+      <button class="tab" data-tab="budget">Budget</button>
+    </div>
+  </header>
+
+  <!-- SPIN TAB -->
+  <section class="tab-content active" id="tab-spin">
+
+    <div class="section-label">Filter by meal time</div>
+    <div class="filter-row" id="filterRow">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="breakfast">Breakfast</button>
+      <button class="chip" data-filter="lunch">Lunch</button>
+      <button class="chip" data-filter="supper">Supper</button>
+      <button class="chip" data-filter="snack">Snack</button>
+    </div>
+
+    <div class="spin-zone">
+      <button class="spin-btn" id="spinBtn">
+        <span class="spin-icon" id="spinIcon">🍽️</span>
+        <span id="spinLabel">Spin for a Meal</span>
+      </button>
+    </div>
+
+    <div class="result-card hidden" id="resultCard">
+      <div class="meal-emoji" id="mealEmoji"></div>
+      <div class="meal-name" id="mealName"></div>
+      <div class="meal-type-badge">
+        <span class="badge" id="mealBadge"></span>
+      </div>
+      <div class="meal-desc" id="mealDesc"></div>
+      <div class="meal-meta">
+        <div class="meta-item">
+          <div class="meta-label">Est. Cost</div>
+          <div class="meta-val" id="mealCost"></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Where to Get</div>
+          <div class="meta-val" id="mealPrep"></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Filling Level</div>
+          <div class="meta-val" id="mealFill"></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Protein</div>
+          <div class="meta-val" id="mealProtein"></div>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="act-btn" id="respinBtn">↺ Respin</button>
+        <button class="act-btn save" id="saveBtn">＋ Save Pick</button>
+        <button class="act-btn share" id="shareBtn">⬆ Share</button>
+      </div>
+    </div>
+
+    <div class="spin-tip" id="spinTip">
+      Tap the button above to get your meal suggestion!
+    </div>
+  </section>
+
+  <!-- SAVED TAB -->
+  <section class="tab-content" id="tab-saved">
+    <div class="saved-header">
+      <h2>Today's Picks</h2>
+      <button id="clearAllBtn" class="clear-btn">Clear All</button>
+    </div>
+    <div class="saved-list" id="savedList"></div>
+    <div class="budget-summary" id="budgetSummary"></div>
+  </section>
+
+  <!-- FULL MENU TAB -->
+  <section class="tab-content" id="tab-menu">
+    <div class="menu-search-row">
+      <input type="text" id="menuSearch" placeholder="Search meals..." class="search-input" />
+    </div>
+    <div class="menu-filter-row" id="menuFilterRow">
+      <button class="chip active" data-mfilter="all">All</button>
+      <button class="chip" data-mfilter="breakfast">Breakfast</button>
+      <button class="chip" data-mfilter="lunch">Lunch</button>
+      <button class="chip" data-mfilter="supper">Supper</button>
+      <button class="chip" data-mfilter="snack">Snack</button>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </section>
+
+  <!-- BUDGET TAB -->
+  <section class="tab-content" id="tab-budget">
+    <div class="budget-card">
+      <div class="budget-title">Weekly Budget Tracker</div>
+      <div class="budget-input-row">
+        <label>My weekly food budget</label>
+        <div class="budget-input-wrap">
+          <span class="ksh-label">Ksh</span>
+          <input type="number" id="budgetInput" placeholder="e.g. 1500" min="0" />
+        </div>
+        <button id="setBudgetBtn" class="set-budget-btn">Set Budget</button>
+      </div>
+      <div class="budget-bars" id="budgetBars"></div>
+    </div>
+
+    <div class="tips-card">
+      <div class="tips-title">💡 Comrade Money Tips</div>
+      <ul class="tips-list">
+        <li>Cook githeri in bulk on Sunday — eat it through Monday/Tuesday.</li>
+        <li>Ndengu cooks fast and costs the least per protein gram.</li>
+        <li>Pair ugali with sukuma wiki — under Ksh 80 anywhere near campus.</li>
+        <li>Mandazi + chai for breakfast keeps you going until 1pm.</li>
+        <li>Avoid hotel meals mid-week — mama mboga is 30–50% cheaper.</li>
+        <li>Track your picks in the "My Picks" tab to spot spending patterns.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(() => {
+        console.log('Service Worker registered');
+      });
+    }
+  </script>
+</body>
+</html>
