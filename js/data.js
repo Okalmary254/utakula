@@ -232,7 +232,7 @@ const MEALS = [
     where: "Choma joint",
     filling: "⭐⭐⭐⭐⭐",
     protein: "Very High"
-  }
+  },
   {
     id: 19,
     name: "Smocha",
@@ -245,7 +245,7 @@ const MEALS = [
     where: "roadside",
     filling: "⭐⭐⭐⭐",
     protein: "medium"
-  }
+  },
   {
     id: 20,
     name: "Ugali mayai",
@@ -258,5 +258,5 @@ const MEALS = [
     where: "Mama mboga",
     filling: "⭐⭐⭐⭐⭐",
     protein: "Medium"
-  },
+  }
 ];
