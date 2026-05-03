@@ -96,7 +96,7 @@ body {
 /* ── Hero Header ──────────────────────────────────────────────────────── */
 .hero {
   background: var(--text);
-  color: #fff;
+  color: #04a60c;
   border-radius: 0 0 28px 28px;
   margin-bottom: 1rem;
   overflow: hidden;
@@ -111,11 +111,11 @@ body {
   letter-spacing: -0.5px;
   margin-bottom: 2px;
 }
-.hero p { font-size: 13px; color: rgba(255,255,255,0.55); }
+.hero p { font-size: 13px; color: rgba(20, 244, 17, 0.55); }
 .tag {
   display: inline-block;
   background: #1D9E75;
-  color: #E1F5EE;
+  color: #054d1a;
   font-size: 11px;
   font-weight: 500;
   padding: 3px 10px;
