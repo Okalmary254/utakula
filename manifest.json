@@ -1,7 +1,7 @@
 {
   "name": "Utakula?",
-  "short_name": "Chagua",
-  "description": "Kenyan campus meal randomizer for comrades",
+  "short_name": "Utakula",
+  "description": "Kenyan campus meal randomizer for comrades and senior bachelors",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a1a",

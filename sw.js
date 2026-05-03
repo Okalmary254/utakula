@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chagua-chakula-v1';
+const CACHE_NAME = 'utakula-v1';
 const ASSETS = [
   '/',
   '/index.html',
