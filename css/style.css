@@ -127,12 +127,13 @@ body {
 .header-tabs {
   display: flex;
   border-top: 1px solid rgba(255,255,255,0.1);
+  color: green;
 }
 .tab {
   flex: 1;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.45);
+  color: rgba(71, 239, 5, 0.96);
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 500;
@@ -142,7 +143,7 @@ body {
   border-bottom: 2px solid transparent;
 }
 .tab.active {
-  color: #fff;
+  color: #2d3295;
   border-bottom: 2px solid #1D9E75;
 }
 .tab-content { display: none; padding: 0; }
