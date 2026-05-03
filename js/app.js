@@ -126,7 +126,7 @@ document.getElementById('saveBtn').addEventListener('click', () => {
 // ── Share Meal ─────────────────────────────────────────────────────────────
 document.getElementById('shareBtn').addEventListener('click', async () => {
   if (!currentMeal) return;
-  const text = `🍽️ Utakula? says: ${currentMeal.emoji} ${currentMeal.name}\n💰 ${currentMeal.cost} | 📍 ${currentMeal.where}\n\nGet the app → chagua-chakula.web.app`;
+  const text = `🍽️ Utakula? says: ${currentMeal.emoji} ${currentMeal.name}\n💰 ${currentMeal.cost} | 📍 ${currentMeal.where}\n\nGet the app → https://utakula.vercel.app`;
   if (navigator.share) {
     await navigator.share({ title: 'Utakula?', text });
   } else {
