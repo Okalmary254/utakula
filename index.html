@@ -28,8 +28,10 @@
     <div class="hero-inner">
       <div class="tag">Comrade Edition 🇰🇪</div>
       <h1>Utakula?</h1>
-      <p>Your Kenyan campus meal randomizer</p>
+      <p>Your Kenyan campus meal randomizer</p><br>
+      <p>Tip jar: 0743874690</p>
     </div>
+
     <div class="header-tabs" style="color: green">
       <button class="tab active" data-tab="spin">Spinner</button>
       <button class="tab" data-tab="saved">My Picks</button>
@@ -60,28 +62,35 @@
     <div class="result-card hidden" id="resultCard">
       <div class="meal-emoji" id="mealEmoji"></div>
       <div class="meal-name" id="mealName"></div>
+
       <div class="meal-type-badge">
         <span class="badge" id="mealBadge"></span>
       </div>
+
       <div class="meal-desc" id="mealDesc"></div>
+
       <div class="meal-meta">
         <div class="meta-item">
           <div class="meta-label">Est. Cost</div>
           <div class="meta-val" id="mealCost"></div>
         </div>
+
         <div class="meta-item">
           <div class="meta-label">Where to Get</div>
           <div class="meta-val" id="mealPrep"></div>
         </div>
+
         <div class="meta-item">
           <div class="meta-label">Filling Level</div>
           <div class="meta-val" id="mealFill"></div>
         </div>
+
         <div class="meta-item">
           <div class="meta-label">Protein</div>
           <div class="meta-val" id="mealProtein"></div>
         </div>
       </div>
+
       <div class="action-row">
         <button class="act-btn" id="respinBtn">↺ Respin</button>
         <button class="act-btn save" id="saveBtn">＋ Save Pick</button>
@@ -100,6 +109,7 @@
       <h2>Today's Picks</h2>
       <button id="clearAllBtn" class="clear-btn">Clear All</button>
     </div>
+
     <div class="saved-list" id="savedList"></div>
     <div class="budget-summary" id="budgetSummary"></div>
   </section>
@@ -107,8 +117,14 @@
   <!-- FULL MENU TAB -->
   <section class="tab-content" id="tab-menu">
     <div class="menu-search-row">
-      <input type="text" id="menuSearch" placeholder="Search meals..." class="search-input" />
+      <input
+        type="text"
+        id="menuSearch"
+        placeholder="Search meals..."
+        class="search-input"
+      />
     </div>
+
     <div class="menu-filter-row" id="menuFilterRow">
       <button class="chip active" data-mfilter="all">All</button>
       <button class="chip" data-mfilter="breakfast">Breakfast</button>
@@ -116,6 +132,7 @@
       <button class="chip" data-mfilter="supper">Supper</button>
       <button class="chip" data-mfilter="snack">Snack</button>
     </div>
+
     <div class="menu-grid" id="menuGrid"></div>
   </section>
 
@@ -123,19 +140,31 @@
   <section class="tab-content" id="tab-budget">
     <div class="budget-card">
       <div class="budget-title">Weekly Budget Tracker</div>
+
       <div class="budget-input-row">
         <label>My weekly food budget</label>
+
         <div class="budget-input-wrap">
           <span class="ksh-label">Ksh</span>
-          <input type="number" id="budgetInput" placeholder="e.g. 1500" min="0" />
+          <input
+            type="number"
+            id="budgetInput"
+            placeholder="e.g. 1500"
+            min="0"
+          />
         </div>
-        <button id="setBudgetBtn" class="set-budget-btn">Set Budget</button>
+
+        <button id="setBudgetBtn" class="set-budget-btn">
+          Set Budget
+        </button>
       </div>
+
       <div class="budget-bars" id="budgetBars"></div>
     </div>
 
     <div class="tips-card">
       <div class="tips-title">💡 Comrade Money Tips</div>
+
       <ul class="tips-list">
         <li>Cook githeri in bulk on Sunday — eat it through Monday/Tuesday.</li>
         <li>Ndengu cooks fast and costs the least per protein gram.</li>
@@ -147,17 +176,30 @@
     </div>
   </section>
 
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>
+      Built with hunger and code 🍽️ |
+      Follow me on X (Twitter):
+      <a href="https://x.com/jean__marie_" target="_blank" rel="noopener noreferrer">
+        @jean__marie_
+      </a>
+    </p>
+  </footer>
+
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
+
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(() => {
-        console.log('Service Worker registered');
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").then(() => {
+        console.log("Service Worker registered");
       });
     }
   </script>
+
 </body>
 </html>
