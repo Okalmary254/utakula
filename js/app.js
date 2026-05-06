@@ -73,7 +73,6 @@ function spinMeal() {
 
   setTimeout(() => {
     let meal;
-    // Avoid repeating last meal
     do { meal = pool[Math.floor(Math.random() * pool.length)]; }
     while (pool.length > 1 && currentMeal && meal.id === currentMeal.id);
     currentMeal = meal;
@@ -292,5 +291,134 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// ── Visitor Tracking ───────────────────────────────────────────────────────
+const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwKHPt1Z5N-ZbrslvhX2GlLr76eiowraS9A-NUcHHZDP6_WOmlomoijEl9uJMD38kon/exec';
+
+function parseUserAgent(ua) {
+  let browser = 'Unknown', browserVersion = '', os = 'Unknown', device = 'Desktop';
+
+  // Browser detection
+  if (/Edg\//.test(ua)) {
+    browser = 'Edge';
+    browserVersion = ua.match(/Edg\/([\d.]+)/)?.[1] || '';
+  } else if (/OPR\/|Opera/.test(ua)) {
+    browser = 'Opera';
+    browserVersion = ua.match(/OPR\/([\d.]+)/)?.[1] || '';
+  } else if (/Chrome\//.test(ua) && !/Chromium/.test(ua)) {
+    browser = 'Chrome';
+    browserVersion = ua.match(/Chrome\/([\d.]+)/)?.[1] || '';
+  } else if (/Firefox\//.test(ua)) {
+    browser = 'Firefox';
+    browserVersion = ua.match(/Firefox\/([\d.]+)/)?.[1] || '';
+  } else if (/Safari\//.test(ua) && !/Chrome/.test(ua)) {
+    browser = 'Safari';
+    browserVersion = ua.match(/Version\/([\d.]+)/)?.[1] || '';
+  } else if (/MSIE|Trident/.test(ua)) {
+    browser = 'Internet Explorer';
+  }
+
+  // OS detection
+  if (/Windows NT 10/.test(ua)) os = 'Windows 10/11';
+  else if (/Windows NT 6\.3/.test(ua)) os = 'Windows 8.1';
+  else if (/Windows NT 6\.1/.test(ua)) os = 'Windows 7';
+  else if (/Windows/.test(ua)) os = 'Windows';
+  else if (/Android/.test(ua)) {
+    os = 'Android ' + (ua.match(/Android ([\d.]+)/)?.[1] || '');
+    device = 'Mobile';
+  } else if (/iPhone/.test(ua)) {
+    os = 'iOS ' + (ua.match(/OS ([\d_]+)/)?.[1]?.replace(/_/g, '.') || '');
+    device = 'Mobile (iPhone)';
+  } else if (/iPad/.test(ua)) {
+    os = 'iPadOS';
+    device = 'Tablet (iPad)';
+  } else if (/Mac OS X/.test(ua)) {
+    os = 'macOS ' + (ua.match(/Mac OS X ([\d_]+)/)?.[1]?.replace(/_/g, '.') || '');
+  } else if (/Linux/.test(ua)) {
+    os = 'Linux';
+  }
+
+  // Device type refinement
+  if (/Mobi|Android|iPhone/.test(ua) && device === 'Desktop') device = 'Mobile';
+  if (/Tablet|iPad/.test(ua) && device === 'Desktop') device = 'Tablet';
+
+  return { browser, browserVersion, os, device };
+}
+
+async function trackVisitor() {
+  // Skip if no webhook set yet
+  if (!SHEET_WEBHOOK || SHEET_WEBHOOK.includes('YOUR_GOOGLE')) return;
+
+  // Avoid re-tracking same session
+  const sessionKey = 'utakula_tracked_' + new Date().toDateString();
+  if (sessionStorage.getItem(sessionKey)) return;
+  sessionStorage.setItem(sessionKey, '1');
+
+  try {
+    // Get IP, ISP, location from ipapi.co 
+    const ipRes = await fetch('https://ipapi.co/json/');
+    const ipData = await ipRes.json();
+
+    const ua = navigator.userAgent;
+    const { browser, browserVersion, os, device } = parseUserAgent(ua);
+
+    const now = new Date();
+
+    const payload = {
+      // Timestamp
+      timestamp: now.toISOString(),
+      date: now.toLocaleDateString('en-KE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+      time: now.toLocaleTimeString('en-KE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+
+      // IP & Network
+      ip: ipData.ip || 'N/A',
+      isp: ipData.org || 'N/A',
+      asn: ipData.asn || 'N/A',
+
+      // Location
+      city: ipData.city || 'N/A',
+      region: ipData.region || 'N/A',
+      country: ipData.country_name || 'N/A',
+      countryCode: ipData.country_code || 'N/A',
+      latitude: ipData.latitude || 'N/A',
+      longitude: ipData.longitude || 'N/A',
+      timezone: ipData.timezone || 'N/A',
+      currency: ipData.currency || 'N/A',
+
+      // Device & Browser
+      browser: browser,
+      browserVersion: browserVersion,
+      os: os,
+      device: device,
+      language: navigator.language || 'N/A',
+      screenResolution: `${screen.width}x${screen.height}`,
+      viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+      colorDepth: screen.colorDepth + '-bit',
+      touchSupport: ('ontouchstart' in window) ? 'Yes' : 'No',
+      cookiesEnabled: navigator.cookieEnabled ? 'Yes' : 'No',
+      doNotTrack: navigator.doNotTrack === '1' ? 'Yes' : 'No',
+
+      // Session
+      referrer: document.referrer || 'Direct',
+      pageUrl: window.location.href,
+      isPWA: window.matchMedia('(display-mode: standalone)').matches ? 'Yes' : 'No',
+      connectionType: navigator.connection?.effectiveType || 'N/A',
+      connectionSpeed: navigator.connection?.downlink ? navigator.connection.downlink + ' Mbps' : 'N/A',
+    };
+
+    // Fire and forget — don't block the UI
+    fetch(SHEET_WEBHOOK, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+  } catch (err) {
+    // Fail silently — never break the app for tracking errors
+    console.warn('Tracking skipped:', err.message);
+  }
+}
+
 // ── Init ───────────────────────────────────────────────────────────────────
 renderSaved();
+trackVisitor();
