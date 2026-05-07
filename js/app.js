@@ -408,10 +408,9 @@ async function trackVisitor() {
     // Fire and forget — don't block the UI
     fetch(SHEET_WEBHOOK, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
-    });
+    }).then(r => r.json()).then(d => console.log('Tracker:', d)).catch(e => console.warn('Tracker:', e));
 
   } catch (err) {
     // Fail silently — never break the app for tracking errors
