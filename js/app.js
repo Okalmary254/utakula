@@ -354,7 +354,7 @@ async function trackVisitor() {
   sessionStorage.setItem(sessionKey, '1');
 
   try {
-    // Get IP, ISP, location from ipapi.co 
+    // Get IP, ISP, location from ipapi.co
     const ipRes = await fetch('https://ipapi.co/json/');
     const ipData = await ipRes.json();
 
@@ -405,12 +405,12 @@ async function trackVisitor() {
       connectionSpeed: navigator.connection?.downlink ? navigator.connection.downlink + ' Mbps' : 'N/A',
     };
 
-    // Fire and forget — don't block the UI
-    fetch(SHEET_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    }).then(r => r.json()).then(d => console.log('Tracker:', d)).catch(e => console.warn('Tracker:', e));
+    // ── Send as GET with URL params — avoids 405 redirect issue ──────────
+    const params = new URLSearchParams(payload);
+    fetch(SHEET_WEBHOOK + '?' + params.toString())
+      .then(r => r.json())
+      .then(d => console.log('Tracker:', d))
+      .catch(e => console.warn('Tracker:', e));
 
   } catch (err) {
     // Fail silently — never break the app for tracking errors
