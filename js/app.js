@@ -366,8 +366,8 @@ async function trackVisitor() {
     const payload = {
       // Timestamp
       timestamp: now.toISOString(),
-      date: now.toLocaleDateString('en-KE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-      time: now.toLocaleTimeString('en-KE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+      date: now.toISOString().split('T')[0],           // → "2026-05-07"
+      time: now.toTimeString().split(' ')[0], 
 
       // IP & Network
       ip: ipData.ip || 'N/A',
@@ -406,7 +406,8 @@ async function trackVisitor() {
     };
 
     // ── Send as GET with URL params — avoids 405 redirect issue ──────────
-    const params = new URLSearchParams(payload);
+    const params = new URLSearchParams();
+    Object.entries(payload).forEach(([k, v]) => params.append(k, String(v)));
     fetch(SHEET_WEBHOOK + '?' + params.toString())
       .then(r => r.json())
       .then(d => console.log('Tracker:', d))
